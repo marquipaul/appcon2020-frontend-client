@@ -15,7 +15,7 @@
               <img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460">
             </v-list-item-avatar> -->
             <v-list-item-avatar color="primary">
-                <span class="white--text headline">{{currentUser.name.charAt(0)}}</span>
+                <span class="white--text headline">{{currentUser? currentUser.name.charAt(0) : 'N/A'}}</span>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>{{currentUser.name}}</v-list-item-title>
@@ -57,11 +57,11 @@ export default {
             model: true,
             mini: false,
             navigations: [
-                {name: 'Dashboard', icon: 'dashboard', route: 'dashboard'},
-                {name: 'Accounts', icon: 'people', route: 'accounts'},
-                {name: 'Brands', icon: 'mdi-clipboard', route: 'brand'},
-                {name: 'Category', icon: 'mdi-collage', route: 'category'},
-                {name: 'Products', icon: 'mdi-package', route: 'product'},
+                {name: 'Dashboard', icon: 'mdi-view-dashboard', route: 'dashboard'},
+                {name: 'Blood Requests', icon: 'mdi-water', route: 'blood-requests'},
+                {name: 'Accounts', icon: 'mdi-account-multiple', route: 'accounts'},
+                {name: 'Process Flows', icon: 'mdi-clipboard-file', route: 'process-flows'},
+                {name: 'Groups', icon: 'mdi-account-group', route: 'groups'}
             ],
         }
     },

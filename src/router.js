@@ -2,8 +2,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from './components/authentication/Login'
 import Dashboard from './components/dashboard/Dashboard'
-import Brand from './components/brand/BrandMain'
-import Category from './components/category/CategoryMain'
+import Account from './components/account/AccountMain'
+import ProcessFlow from './components/company-admin/process-flow/ProcessFlowMain'
+import Group from './components/company-admin/groups/GroupMain'
+import BloodRequest from './components/company-admin/blood-request/BloodRequestMain'
 
 Vue.use(Router)
 
@@ -25,17 +27,33 @@ export default new Router({
       }
     },
     {
-      path: '/brand',
-      name: 'brand',
-      component: Brand,
+      path: '/accounts',
+      name: 'accounts',
+      component: Account,
       meta: {
         requiresAuth: true,
       }
     },
     {
-      path: '/category',
-      name: 'category',
-      component: Category,
+      path: '/process-flows',
+      name: 'process-flows',
+      component: ProcessFlow,
+      meta: {
+        requiresAuth: true,
+      }
+    },
+    {
+      path: '/groups',
+      name: 'groups',
+      component: Group,
+      meta: {
+        requiresAuth: true,
+      }
+    },
+    {
+      path: '/blood-requests',
+      name: 'blood-request',
+      component: BloodRequest,
       meta: {
         requiresAuth: true,
       }

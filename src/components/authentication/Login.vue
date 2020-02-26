@@ -22,7 +22,7 @@
                 dark
                 flat
               >
-                <v-toolbar-title>CS Barrera</v-toolbar-title>
+                <v-toolbar-title>BloodDrive</v-toolbar-title>
                 <v-spacer></v-spacer>
 
               </v-toolbar>
@@ -31,7 +31,7 @@
                   <v-text-field
                     label="Username"
                     name="login"
-                    prepend-icon="person"
+                    prepend-icon="mdi-account"
                     type="text"
                     v-model="form.username"
                   ></v-text-field>
@@ -40,7 +40,7 @@
                     id="password"
                     label="Password"
                     name="password"
-                    prepend-icon="lock"
+                    prepend-icon="mdi-lock"
                     type="password"
                     v-model="form.password"
                   ></v-text-field>

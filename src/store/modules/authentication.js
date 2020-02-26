@@ -30,7 +30,7 @@ const actions = {
     retrieveToken(context, credentials){
         return new Promise((resolve, reject) => {
             axios.post('/api/login', {
-                username: credentials.username,
+                email: credentials.username,
                 password: credentials.password,
             })
             .then(response => {
@@ -72,6 +72,22 @@ const actions = {
                 })
             })
           }
+        },
+        adminUpdateHospital(context, form) {
+            console.log(form)
+            return new Promise((resolve, reject) => {
+                axios.put(`/api/update/hospital-id/${form.id}`, { hospital_id: form.hospital_id })
+                    .then(response => {
+                        resolve(response)
+                        var user = response.data
+                        localStorage.setItem('current_user', JSON.stringify(user))
+                        context.commit('retrieveUser', JSON.stringify(user))
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        reject(error)
+                    })
+            })
         },
 };
 
