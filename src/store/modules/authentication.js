@@ -15,6 +15,7 @@ const getters = {
 const mutations = {
     retrieveToken(state, token){
         state.token = token
+        localStorage.setItem('access_token', token)
       },
     destroyToken(state){
         state.token = null
@@ -35,14 +36,21 @@ const actions = {
             })
             .then(response => {
                 var token = response.data.token.access_token
-                localStorage.setItem('access_token', token)
+                //localStorage.setItem('access_token', token)
                 context.commit('retrieveToken', token)
 
                 var user = response.data.user
                 localStorage.setItem('current_user', JSON.stringify(user))
                 context.commit('retrieveUser', JSON.stringify(user))
                 resolve(response)
+                
                 //console.log(token)
+
+                setTimeout(() => {
+                    if(context.getters.loggedIn) {
+                        context.dispatch('accountOnline', user.id)
+                    }
+                }, 1000);
   
             })
             .catch(error => {

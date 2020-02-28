@@ -4,11 +4,11 @@ export function initialize(store, router, axios) {
         const token = store.state.auth.token;
     
         if(token){
-            Echo.connector.pusher.config.auth.headers['Authorization'] = `Bearer ${store.state.auth.token}`
+            Echo.connector.pusher.config.auth.headers['Authorization'] = `Bearer ${token}`
         }
 
         if(token){
-            axios.defaults.headers.common["Authorization"] = `Bearer ${store.state.auth.token}` 
+            axios.defaults.headers.common["Authorization"] = `Bearer ${token}` 
         }
 
         if (requiresAuth && !token) {

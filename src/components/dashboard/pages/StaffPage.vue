@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row id="create">
       <v-snackbar
         bottom
         right
@@ -82,7 +82,7 @@
             </v-card>
       </v-col>
       <v-col cols="12" xl="8" lg="8" md="12" sm="12">
-        <v-card>
+        <v-card min-height="700">
             <v-card-title>
                 {{selected!=null? selected_transaction.donor.name : 'Select a Transaction'}}
                 <v-spacer></v-spacer>
@@ -126,13 +126,19 @@
                                 <v-card class="elevation-1">
                                     <v-card-text>
                                         <v-row no-gutters>
-                                            <v-col cols="10">
+                                            <v-col cols="9">
                                                 <h3>{{item.content}}</h3> 
                                             </v-col>
                                             <v-col v-if="transaction.answer" cols="2" class="d-flex justify-end">
                                                 <v-chip small class="overline" :color="item.status=='passed'? 'success' : 'error'">
                                                     {{item.status}}
                                                 </v-chip>
+                                            </v-col>
+                                            <v-col v-else cols="3" class="d-flex justify-end mt-n5">
+                                                <v-radio-group v-if="!item.correct" v-model="item.status" row>
+                                                    <v-radio color="success" label="Passed" value="passed"></v-radio>
+                                                    <v-radio color="error" label="Failed" value="failed"></v-radio>
+                                                </v-radio-group>
                                             </v-col>
                                         </v-row>
                                     </v-card-text>
@@ -143,7 +149,6 @@
                                             label="Text Response"
                                             solo
                                             v-model="item.answer"
-                                            :disabled="status"
                                             v-validate="'required'"
                                             :error-messages="errors.collect(`Answer of question no. ${index + 1}`)"
                                             :data-vv-name="`Answer of question no. ${index + 1}`"
@@ -185,15 +190,31 @@
             </v-card-text>
         </v-card>
       </v-col>
+    <GroupChat/>
   </v-row>
 </template>
 <script>
 var moment = require('moment')
 import { mapGetters } from 'vuex'
+import GroupChat from './GroupChat'
 import _ from "lodash";
 export default {
+    components: {
+        GroupChat
+    },
     data() {
         return {
+            direction: 'top',
+      fab: false,
+      fling: false,
+      hover: false,
+      tabs: null,
+      top: false,
+      right: true,
+      bottom: true,
+      left: false,
+      transition: 'slide-y-reverse-transition',
+      ////
             selected: null,
             selected_transaction: {},
             transaction: {},
@@ -266,17 +287,19 @@ export default {
                         for (let index = 0; index < this.process_flow.questions.length; index++) {
                             const element = this.process_flow.questions[index];
                             //Determine if the ANSWERED QUESTION's result id passed or failed based on the answer
-                            if (element.question_type == 'checkbox') {
-                                if (this.arraysEqual(element.answer, element.correct)) {
-                                    this.$set(this.process_flow.questions[index], 'status', 'passed')
+                            if (element.correct) {
+                                if (element.question_type == 'checkbox') {
+                                    if (this.arraysEqual(element.answer, element.correct)) {
+                                        this.$set(this.process_flow.questions[index], 'status', 'passed')
+                                    } else {
+                                        this.$set(this.process_flow.questions[index], 'status', 'failed')
+                                    }
                                 } else {
-                                    this.$set(this.process_flow.questions[index], 'status', 'failed')
-                                }
-                            } else {
-                                if (element.answer == element.correct) {
-                                    this.$set(this.process_flow.questions[index], 'status', 'passed')
-                                } else {
-                                    this.$set(this.process_flow.questions[index], 'status', 'failed')
+                                    if (element.answer == element.correct) {
+                                        this.$set(this.process_flow.questions[index], 'status', 'passed')
+                                    } else {
+                                        this.$set(this.process_flow.questions[index], 'status', 'failed')
+                                    }
                                 }
                             }
 
@@ -375,7 +398,7 @@ export default {
                         donor_id: this.transaction.donor_id,
                         staff_id: this.transaction.staff_id,
                         answer_id: null,
-                        process_flow_id: this.transaction.process_flow_id
+                        process_flow_id: this.transaction.process_flow_id,
                     }
                     let updateIndex = this.process_flow.questions.findIndex(item => item.id === result.question.id);
                     this.$set(this.process_flow.questions, updateIndex, newData)
@@ -391,11 +414,11 @@ export default {
                             question_type: question.question_type,
                             answer: [],
                             correct: JSON.parse(question.options).correct,
-                            status: null,
                             donor_id: this.transaction.donor_id,
                             staff_id: this.transaction.staff_id,
                             answer_id: null,
-                            process_flow_id: this.transaction.process_flow_id
+                            process_flow_id: this.transaction.process_flow_id,
+                            status: 'passed' 
                         }
                         let updateIndex = this.process_flow.questions.findIndex(item => item.id === question.id);
                         this.$set(this.process_flow.questions, updateIndex, newData)
@@ -407,11 +430,11 @@ export default {
                             question_type: question.question_type,
                             answer: '',
                             correct: JSON.parse(question.options).correct,
-                            status: null,
                             donor_id: this.transaction.donor_id,
                             staff_id: this.transaction.staff_id,
                             answer_id: null,
-                            process_flow_id: this.transaction.process_flow_id
+                            process_flow_id: this.transaction.process_flow_id,
+                            status: 'passed' 
                         }
                         let updateIndex = this.process_flow.questions.findIndex(item => item.id === question.id);
                         this.$set(this.process_flow.questions, updateIndex, newData)
@@ -427,7 +450,20 @@ export default {
             transactions:'retrieveTransactions',
             last_page: 'retrieveLastPageTransaction',
         }),
+        chats(){
+            return this.$store.getters['retrieveChats']
+        },
     }
 
 }
 </script>
+<style>
+  /* This is for documentation purposes and will not be needed in your application */
+  #create .v-speed-dial {
+    position: absolute;
+  }
+
+  #create .v-btn--floating {
+    position: relative;
+  }
+</style>

@@ -401,7 +401,7 @@ Vue.use(VeeValidate)
                 .then((response) => {
                     this.$store.dispatch('retrieveFlows')
                     this.snackbar = true
-                    this.msg = 'Process Flow Successfully Created'
+                    this.msg = 'Question Successfully Created'
                     this.color = 'success'
                     this.loading = false
                     this.clearFileds()
@@ -430,7 +430,7 @@ Vue.use(VeeValidate)
                 .then((response) => {
                     this.$store.dispatch('retrieveFlows')
                     this.snackbar = true
-                    this.msg = 'Process Flow Successfully Updated'
+                    this.msg = 'Question Successfully Updated'
                     this.color = 'success'
                     this.loading = false
                     this.cancelEditQuestion()

@@ -12,6 +12,7 @@ import GroupModule from './modules/Group'
 import BloodRequestModule from './modules/blood-requests'
 import TransactionModule from './modules/transactions'
 import NotificationModule from './modules/notification'
+import ChatModule from './modules/chats'
 
 export default new Vuex.Store({
   state: {},
@@ -26,6 +27,7 @@ export default new Vuex.Store({
     group: GroupModule,
     bloodRequests: BloodRequestModule,
     transaction: TransactionModule,
-    notification: NotificationModule
+    notification: NotificationModule,
+    chats: ChatModule
   }
 })

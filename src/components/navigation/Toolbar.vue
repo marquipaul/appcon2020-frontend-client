@@ -3,7 +3,7 @@
         <v-overlay :value="loading">
             <v-progress-circular indeterminate size="64"></v-progress-circular>
         </v-overlay>
-        <v-app-bar class="primary" clipped-left app>
+        <v-app-bar :id="$vuetify.theme.dark? 'backgroundThemeDark' : 'backgroundTheme'" clipped-left app>
         <v-app-bar-nav-icon text color="white"
             v-if="primaryDrawer.type !== 'permanent'&&currentUser.user_type != 'staff1'"
             @click.stop="drawerOpen"
@@ -37,8 +37,8 @@
                 ></v-autocomplete>
             </div>
             <Notification/>
-            <v-btn color="white" text small fab @click="$vuetify.theme.dark = !$vuetify.theme.dark"><v-icon>mdi-brightness-6</v-icon> </v-btn>
-            <v-btn color="white" text small fab @click="logout"> <v-icon>mdi-power</v-icon> </v-btn>
+            <v-btn color="grey darken-2" text small fab @click="$vuetify.theme.dark = !$vuetify.theme.dark"><v-icon>mdi-brightness-6</v-icon> </v-btn>
+            <v-btn color="grey darken-2" text small fab @click="logout"> <v-icon>mdi-power</v-icon> </v-btn>
         </v-app-bar>
     </div>
 </template>
@@ -129,4 +129,14 @@ export default {
     color: #2196f3 !important;
     caret-color: #2196f3 !important;
 }
+  #backgroundTheme {
+    background: #D32F2FB2;
+    background: -webkit-linear-gradient(to right, #D32F2FB2, #EF9A9AB2);
+    background: linear-gradient(to right, #D32F2FB2, #EF9A9AB2);
+  }
+  #backgroundThemeDark {
+    background: #EF5350B2;
+    background: -webkit-linear-gradient(to right, #EF5350B2, #EF9A9AB2);
+    background: linear-gradient(to right, #EF5350B2, #EF9A9AB2);
+  }
 </style>

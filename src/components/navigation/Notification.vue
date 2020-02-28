@@ -31,26 +31,13 @@
         <template v-slot:activator="{ on }">
             
                 <v-btn :loading="loading" @click="getNotifications" color="white" v-on="on" text small fab> 
-                    <!-- <v-badge
-                        color="green"
-                        :content="6"
-                        :value="6"
-                        offset-x="10"
-                        offset-y="10"
-                        >
-                <v-icon small>mdi-bell</v-icon> 
-                    </v-badge> -->
+
                     <v-badge v-if="!loading" color="blue-grey darken-3 white--text" overlap right>
                         <template v-slot:badge>{{notifications.length}}</template>
-                        <v-icon>mdi-bell</v-icon>
+                        <v-icon color="grey darken-2">mdi-bell</v-icon>
                     </v-badge>
                 </v-btn>
-                <!-- <v-btn flat icon v-on="on">
-                    <v-badge color="blue-grey darken-3 white--text" left>
-                        <template v-slot:badge>{{products.length}}</template>
-                        <v-icon>shopping_cart</v-icon>
-                    </v-badge>
-                </v-btn> -->
+ 
         </template>
         <v-card >
                 <v-card-title>
@@ -95,8 +82,12 @@ import { mapGetters } from 'vuex'
       snackbar: false
     }),
     created() {
-        this.getNotifications()
-        this.listenToNotifications()
+        if (this.isLoggedIn) {
+            setTimeout(() => {
+                this.getNotifications()
+                this.listenToNotifications()
+            }, 1000);
+        }
     },
     methods: {
         listenToNotifications() {
@@ -140,6 +131,7 @@ import { mapGetters } from 'vuex'
     computed: {
         ...mapGetters({
             notifications:'retrieveNotifications',
+            isLoggedIn:'loggedIn',
         }),
         currentUser(){
             return JSON.parse(this.$store.state.auth.currentUser)

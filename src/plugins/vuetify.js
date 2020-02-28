@@ -14,7 +14,7 @@ export default new Vuetify({
       light: {
         backgroundGradientDark: '#D32F2F',
         backgroundGradientLight: '#E57373',
-        primary: colors.red.darken1,
+        primary: '#E57373',
         // secondary: colors.red,
         // success: '#58c46c',
         // danger: '#ee4b5a',

@@ -85,7 +85,6 @@
             this.loading = true
             this.$store.dispatch('retrieveToken', this.$data.form)
             .then(response => {
-                this.loader = false
                 this.loading = false
                 this.$router.push({path: '/dashboard'});
                 //console.log(response)

@@ -3,7 +3,7 @@
     <v-flex lg12>
       Dashboard
     </v-flex>
-    <v-flex lg12>
+    <v-flex class="col-12" v-if="currentUser.user_type == 'staff1'">
       <StaffPage/>
     </v-flex>
   </v-layout>
