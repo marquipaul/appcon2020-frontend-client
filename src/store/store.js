@@ -13,7 +13,8 @@ import BloodRequestModule from './modules/blood-requests'
 import TransactionModule from './modules/transactions'
 import NotificationModule from './modules/notification'
 import ChatModule from './modules/chats'
-
+import ExtractionModule from './modules/extractions'
+import AnalyticsModule from './modules/Analytics'
 export default new Vuex.Store({
   state: {},
   mutations: {},
@@ -28,6 +29,8 @@ export default new Vuex.Store({
     bloodRequests: BloodRequestModule,
     transaction: TransactionModule,
     notification: NotificationModule,
-    chats: ChatModule
+    chats: ChatModule,
+    extraction: ExtractionModule,
+    analytics: AnalyticsModule
   }
 })

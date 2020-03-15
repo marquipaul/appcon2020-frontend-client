@@ -23,8 +23,8 @@
         bottom
         left
         offset-y
-        max-width="300"
-        min-width="300"
+        max-width="340"
+        min-width="340"
         
         >
         
@@ -34,7 +34,7 @@
 
                     <v-badge v-if="!loading" color="blue-grey darken-3 white--text" overlap right>
                         <template v-slot:badge>{{notifications.length}}</template>
-                        <v-icon color="grey darken-2">mdi-bell</v-icon>
+                        <v-icon color="white">mdi-bell</v-icon>
                     </v-badge>
                 </v-btn>
  
@@ -62,7 +62,13 @@
                                 </v-list-item-avatar>
                                 <v-list-item-content>
                                     <v-list-item-title>{{item.data.user.name}}</v-list-item-title>
-                                    <v-list-item-subtitle>{{item.data.transaction.process_flow.title}}</v-list-item-subtitle>
+                                    <v-list-item-subtitle>
+                                        {{item.data.transaction.process_flow.title}}
+                                        
+                                        <v-chip x-small :color="item.data.transaction.deleted? 'error' : 'success'" class="overline">{{item.data.transaction.deleted? 'Cancelled' : 'New'}}</v-chip>
+
+                                        
+                                    </v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
                             <v-divider :key="item.id"></v-divider>
@@ -91,11 +97,14 @@ import { mapGetters } from 'vuex'
     },
     methods: {
         listenToNotifications() {
+            var audio = new Audio('sounds/notification.mp3')
             var userId = this.currentUser.id;
             window.Echo.private('App.User.' + userId)
                 .notification((notification) => {
                     this.snackbar = true
                     this.$store.dispatch('pushNotification', notification)
+                    audio.play()
+                    audio.muted = false;
                 });
         },
         getNotifications() {

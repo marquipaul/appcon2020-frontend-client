@@ -59,9 +59,10 @@ export default {
             navigations: [
                 {name: 'Dashboard', icon: 'mdi-view-dashboard', route: 'dashboard'},
                 {name: 'Blood Requests', icon: 'mdi-water', route: 'blood-requests'},
+                {name: 'Blood Extractions', icon: 'mdi-blood-bag', route: 'blood-extractions'},
                 {name: 'Accounts', icon: 'mdi-account-multiple', route: 'accounts'},
                 {name: 'Process Flows', icon: 'mdi-clipboard-file', route: 'process-flows'},
-                {name: 'Groups', icon: 'mdi-account-group', route: 'groups'}
+                {name: 'Groups', icon: 'mdi-account-group', route: 'groups'},
             ],
         }
     },

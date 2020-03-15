@@ -81,6 +81,18 @@ const actions = {
             })
         }) 
     },
+    updateFinalFlow(context, payload) {
+        return new Promise((resolve, reject) => {
+            axios.put(`/api/process-flow/${payload.id}?update_final_process`, payload)
+            .then(response => {
+                //context.commit('updateFlow', response.data)
+                resolve(response)
+            })
+            .catch(error => {
+                reject(error)
+            })
+        }) 
+    },
     deleteFlow(context, id) {
         return new Promise((resolve, reject) => {
             axios.delete(`/api/process-flow/${id}`)

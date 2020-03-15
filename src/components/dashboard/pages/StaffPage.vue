@@ -129,12 +129,12 @@
                                             <v-col cols="9">
                                                 <h3>{{item.content}}</h3> 
                                             </v-col>
-                                            <v-col v-if="transaction.answer" cols="2" class="d-flex justify-end">
+                                            <!-- <v-col v-if="transaction.answer" cols="2" class="d-flex justify-end">
                                                 <v-chip small class="overline" :color="item.status=='passed'? 'success' : 'error'">
                                                     {{item.status}}
                                                 </v-chip>
-                                            </v-col>
-                                            <v-col v-else cols="3" class="d-flex justify-end mt-n5">
+                                            </v-col> -->
+                                            <v-col cols="3" class="d-flex justify-end mt-n5">
                                                 <v-radio-group v-if="!item.correct" v-model="item.status" row>
                                                     <v-radio color="success" label="Passed" value="passed"></v-radio>
                                                     <v-radio color="error" label="Failed" value="failed"></v-radio>
@@ -182,11 +182,131 @@
                                 </v-card>
                             </v-timeline-item>
                         </v-timeline>
-                        <v-btn @click="submitAnswer" :loading="loadingData" block outlined rounded color="primary">
+                        <v-btn v-if="transaction.process_flow? transaction.process_flow.final_process? failed? true : false : true : true" @click="submitAnswer" :loading="loadingData" block outlined rounded color="primary">
                             {{transaction.answer? 'Update Answer' : 'Submit Answer'}}
                         </v-btn>
                     </v-col>
                 </v-row>
+            </v-card-text>
+        </v-card>
+        <v-card class="mt-5" v-if="transaction.process_flow? transaction.process_flow.final_process? failed? false : true : false : false">
+            <v-card-title>Blood Extraction Details
+                <v-tooltip bottom v-if="agreedDisable">
+                    <template v-slot:activator="{ on }">
+                        <v-icon :size="25" v-on="on">mdi-information</v-icon>
+                    </template>
+                    <span>If you wish to update this information you have to ask the Company Admin First</span>
+                </v-tooltip>
+                <v-spacer></v-spacer>
+                <v-chip class="text-uppercase"> Blood Type: {{extract_form.blood_type}}</v-chip>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+                <v-container>
+                    <v-row>
+                        <v-col cols="6">
+                            <p class="mb-n1 font-weight-bold">Serial Number</p>
+                            <v-text-field
+                                class="mt-1"
+                                solo
+                                v-model="extract_form.serial_number"
+                                v-validate="'required'"
+                                :error-messages="errors.collect('serial number')"
+                                label="Enter Serial Number"
+                                data-vv-name="serial number"
+                                required
+                                :readonly="agreedDisable"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="3">
+                            <p class="mb-n1 font-weight-bold">Blood Bag</p>
+                            <v-text-field
+                                class="mt-1"
+                                solo
+                                v-model="extract_form.blood_bag"
+                                v-validate="'required'"
+                                :error-messages="errors.collect('blood bag')"
+                                label="Enter Blood Bag"
+                                data-vv-name="blood bag"
+                                required
+                                :readonly="agreedDisable"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="3">
+                            <p class="mb-n1 font-weight-bold">Number of Units</p>
+                            <v-text-field
+                                class="mt-1"
+                                solo
+                                v-model="extract_form.number_of_units"
+                                v-validate="'required'"
+                                :error-messages="errors.collect('number of units')"
+                                label="Enter Number of Units"
+                                data-vv-name="number of units"
+                                required
+                                :readonly="agreedDisable"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="6">
+                            <p class="mb-n1 font-weight-bold">Donor Name
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on }">
+                                    <v-icon :size="17" v-on="on">mdi-information</v-icon>
+                                </template>
+                                <span>By entering the name of the patient, The patient must agree to the terms and privacy policy of BloodDrivePH.</span>
+                            </v-tooltip>
+                            </p>
+                            <v-text-field
+                                class="mt-1"
+                                solo
+                                v-model="extract_form.donor_name"
+                                v-validate="'required'"
+                                :error-messages="errors.collect('donor name')"
+                                label="Enter Donor Name"
+                                data-vv-name="donor name"
+                                required
+                                :readonly="agreedDisable"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="6">
+                            <p class="mb-n1 font-weight-bold">Philebotomist
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on }">
+                                    <v-icon :size="17" v-on="on">mdi-information</v-icon>
+                                </template>
+                                <span>By entering your name, All of the information provided must be correct and the patient must agree to the terms and privacy policy of BloodDrivePH.</span>
+                            </v-tooltip>
+                            </p>
+                            <v-text-field
+                                class="mt-1"
+                                solo
+                                v-model="extract_form.philebotomist"
+                                v-validate="'required'"
+                                :error-messages="errors.collect('philebotomist')"
+                                label="Enter Philebotomiste"
+                                data-vv-name="philebotomist"
+                                required
+                                :readonly="agreedDisable"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12">
+                            <v-card outlined>
+                                <v-card-text>
+                                    <v-checkbox
+                                        :disabled="agreedDisable"
+                                        v-model="agreed"
+                                        label="Check here to indicate that you and the patient have read and agree to the terms and privacy policy of BloodDrivePH"
+                                    ></v-checkbox>
+                                    <v-btn class="text-capitalize" text small color="blue darken-3">Terms of Use and Privacy Policy</v-btn>
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
+                        <v-col cols="12">
+                            <v-btn :disabled="!agreed||agreedDisable" @click="submitAnswer" :loading="loadingData" block outlined rounded color="primary">
+                                Submit Extraction
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-container>
             </v-card-text>
         </v-card>
       </v-col>
@@ -204,16 +324,19 @@ export default {
     },
     data() {
         return {
+            failed: false,
+            agreed: false,
+            agreedDisable: false,
             direction: 'top',
-      fab: false,
-      fling: false,
-      hover: false,
-      tabs: null,
-      top: false,
-      right: true,
-      bottom: true,
-      left: false,
-      transition: 'slide-y-reverse-transition',
+            fab: false,
+            fling: false,
+            hover: false,
+            tabs: null,
+            top: false,
+            right: true,
+            bottom: true,
+            left: false,
+            transition: 'slide-y-reverse-transition',
       ////
             selected: null,
             selected_transaction: {},
@@ -226,13 +349,32 @@ export default {
             page: 1,
             snackbar: false,
             msg: '',
-            color: 'success'
+            color: 'success',
+            extract_form: {}
         };
     },
     mounted() {
         this.getPendingTransactions()
     },
     watch: {
+        process_flow: {
+            handler() {
+                var count = 0;
+                for (let index = 0; index < this.process_flow.questions.length; index++) {
+                    const element = this.process_flow.questions[index];
+                    if(element.status == 'failed')
+                        count++;
+                }
+
+                if (count > 0) {
+                    this.failed = true
+                } else {
+                    this.failed = false
+                }
+                console.log(this.failed? 'failed' : 'success')
+            },
+            deep: true
+        },
         selected: {
             handler() {
                 console.log(this.selected)
@@ -276,8 +418,7 @@ export default {
                         this.errors.remove(`check${index}`)
                     }
                 }
-            });
-        
+            });     
             
             this.$validator.validateAll().then(res => {
                 if (res) {
@@ -323,12 +464,24 @@ export default {
                         console.log(form)
                         this.$store.dispatch(`${this.transaction.answer? 'updateAnswer' : 'submitAnswer'}`, form)
                             .then(response => {
-                                console.log(response)
                                 this.loadingData = false
                                 this.snackbar = true
                                 this.color = resultStatus? 'success' : 'error',
                                 this.msg = `${resultStatus? 'Donor Passed the Evaluation :)' : 'Donor Failed the Evaluation :('}`
+                                
+                                //determine if the process flow is the final process and if passed
+                                if (this.transaction.process_flow? this.transaction.process_flow.final_process? this.failed? false : true : false : false) {
+                                    this.submitExtraction(response.data)
+                                }
+
                                 this.getPendingTransactions()
+                                this.getTransaction()
+                            })
+                            .catch(error => {
+                                this.loadingData = false
+                                this.snackbar = true
+                                this.color = 'error',
+                                this.msg = error.response.data.msg
                                 this.getTransaction()
                             })
                                 
@@ -356,6 +509,29 @@ export default {
                     return false;
             }
             return true;
+        },
+        submitExtraction(transactionData) {
+            //submit extraction
+            console.log('ExtractionData', this.extract_form)
+            console.log('TransactionData', transactionData)
+            var form = {
+                blood_request_id: this.transaction.blood_request_id,
+                staff_group_id: this.transaction.staff_group_id,
+                donor_id: this.transaction.donor_id,
+                staff_id: this.transaction.staff_id,
+                donor_name: this.extract_form.donor_name,
+                philebotomist: this.extract_form.philebotomist,
+                serial_number: this.extract_form.serial_number,
+                blood_bag: this.extract_form.blood_bag,
+                number_of_units: this.extract_form.number_of_units
+            }
+
+            console.log('formExtract', form)
+            
+            this.$store.dispatch('storeExtraction', form)
+                .then(response => {
+                    console.log('extractResponse', response)
+                })
         },
         getPendingTransactions() {
             this.loading = true
@@ -441,6 +617,17 @@ export default {
                     }
                 })
             }
+
+            if (this.transaction.blood_request.blood_extraction) {
+                this.extract_form = this.transaction.blood_request.blood_extraction
+                this.agreed = true
+                this.agreedDisable = true
+            } else {
+                this.extract_form = {}
+                this.agreed = false
+                this.agreedDisable = false
+            }
+            
             
         }
     },

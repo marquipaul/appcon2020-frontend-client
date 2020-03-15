@@ -78,7 +78,7 @@
                         :error-messages="errors.collect('account type')"
                         data-vv-name="account type"
                         v-model="form.user_type" 
-                        :items="[{text: 'Company Admin', value: 'company_admin'}, {text: 'Hospital Admin', value: 'hospital_admin'}, {text: 'Staff', value: 'staff1'}]" 
+                        :items="[{text: 'Company Admin', value: 'company_admin'}, {text: 'Staff', value: 'staff1'}]" 
                         item-text="text"
                         item-value="value"
                         solo 
@@ -250,7 +250,7 @@
                 }).catch(error => {
                     console.log(error)
                     this.snackbar = true
-                    this.msg = 'Account Successfully Created'
+                    this.msg = 'Something went wrong'
                     this.color = 'error'
                      if (error.response.data.errors.email&&error.response.data.errors.mobile_number) {
                         this.snackbar = true

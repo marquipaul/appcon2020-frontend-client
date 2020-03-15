@@ -1,8 +1,10 @@
 <template>
     <v-menu
+      
       v-model="menu"
       :close-on-content-click="false"
-      :nudge-width="300"
+      :max-width="400"
+      :min-width="400"
       top 
       offset-y
       offset-x
@@ -26,7 +28,7 @@
         </v-btn>
       </template>
 
-      <v-card min-height="500">
+      <v-card min-height="500" max-height="500" style="overflow-y: hidden;">
         <v-list>
           <v-list-item>
             <v-list-item-avatar>
@@ -48,8 +50,12 @@
             </v-list-item-action>
           </v-list-item>
         </v-list>
-
         <v-divider></v-divider>
+        <!-- <v-progress-linear
+            height="1"
+            indeterminate
+            v-if="loading"
+        ></v-progress-linear> -->
         <v-card-text style="height: 350px; overflow: auto;"  @scroll="onScroll" v-chat-scroll="{always: false, smooth: true, scrollonremoved:true}">
             <div v-for="(item, index) in chats" :key="index">
                 <div>
@@ -96,8 +102,8 @@ export default {
             menu: false,
             loading: false,
             message: '',
-            sender_id: 0
-
+            sender_id: 0,
+            per_page: 15
         };
     },
   created() {
@@ -118,6 +124,7 @@ export default {
   },
   methods: {
       listenChat() {
+        var audio = new Audio('sounds/chat.mp3')
         var groupId = this.currentUser.staff_group_id;
         var userId = this.currentUser.id;
           window.Echo.private(`group-chat.${groupId}`)
@@ -126,10 +133,14 @@ export default {
                   if (userId != e.chat.user_id) {
                     this.$store.commit('pushChat', e.chat)
                     this.$store.commit('addUnreadCount')
+                    audio.play()
+                    audio.muted = false;
+                    //this.desktopNotification(e.chat.user.name)
                   }
                   this.sender_id = e.chat.user_id
                   console.log('pasok', e)
                 }
+                
             })
             this.getGroupConversations()
       },
@@ -159,12 +170,16 @@ export default {
             }
           }
         }
+      } else if (scrollTop === 0) {
+        this.per_page+=8
+        this.getGroupConversations()
       }
     },
     getGroupConversations() {
       this.loading = true
       let params = {
-        read: this.menu? true : null
+        read: this.menu? true : null,
+        per_page: this.per_page
       }
       this.$store.dispatch('retrieveGroupConversations', params)
         .then(res => {
@@ -182,6 +197,30 @@ export default {
     },
     clearConversation() {
       this.$store.dispatch('clearConversations')
+    },
+    desktopNotification(name) {
+      const notification = {
+        title: 'New Message',
+        options: {
+          body: `${name} send a message to the group`,
+          image: 'img/logo.png'
+        },
+        events: {
+          onerror: function () {
+              console.log('Custom error event was called');
+          },
+          onclick: function () {
+              console.log('Custom click event was called');
+          },
+          onclose: function () {
+              console.log('Custom close event was called');
+          },
+          onshow: function () {
+              console.log('Custom show event was called');
+          }
+        }
+      }
+      this.$notification.show(notification.title, notification.options, notification.events)
     }
   },
   computed: {

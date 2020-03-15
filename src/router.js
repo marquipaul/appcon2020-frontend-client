@@ -6,6 +6,7 @@ import Account from './components/account/AccountMain'
 import ProcessFlow from './components/company-admin/process-flow/ProcessFlowMain'
 import Group from './components/company-admin/groups/GroupMain'
 import BloodRequest from './components/company-admin/blood-request/BloodRequestMain'
+import BloodExtraction from './components/company-admin/blood-extraction/ExtractionMain'
 
 Vue.use(Router)
 
@@ -54,6 +55,14 @@ export default new Router({
       path: '/blood-requests',
       name: 'blood-request',
       component: BloodRequest,
+      meta: {
+        requiresAuth: true,
+      }
+    },
+    {
+      path: '/blood-extractions',
+      name: 'blood-request',
+      component: BloodExtraction,
       meta: {
         requiresAuth: true,
       }

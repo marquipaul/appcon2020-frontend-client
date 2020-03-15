@@ -37,8 +37,8 @@
                 ></v-autocomplete>
             </div>
             <Notification/>
-            <v-btn color="grey darken-2" text small fab @click="$vuetify.theme.dark = !$vuetify.theme.dark"><v-icon>mdi-brightness-6</v-icon> </v-btn>
-            <v-btn color="grey darken-2" text small fab @click="logout"> <v-icon>mdi-power</v-icon> </v-btn>
+            <v-btn color="white" text small fab @click="$vuetify.theme.dark = !$vuetify.theme.dark"><v-icon>mdi-brightness-6</v-icon> </v-btn>
+            <v-btn color="white" text small fab @click="logout"> <v-icon>mdi-power</v-icon> </v-btn>
         </v-app-bar>
     </div>
 </template>

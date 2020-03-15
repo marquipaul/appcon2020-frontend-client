@@ -93,6 +93,9 @@ export default {
                 })
         },
         deleteGroup() {
+          if (this.staffs.length === 0) {
+            this.removeGroup()
+          } else {
             for (let index = 0; index < this.staffs.length; index++) {
                 const staff = this.staffs[index];
                 this.removeStaff(staff)
@@ -100,6 +103,7 @@ export default {
                     this.removeGroup()
                 }
             }
+          }
         },
         removeGroup() {
             this.loading = true

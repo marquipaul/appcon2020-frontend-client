@@ -53,7 +53,7 @@
                               :key="i"
                               >
                               <v-list-item-content>
-                                  <v-list-item-title v-text="item.donor.name"></v-list-item-title>
+                                  <v-list-item-title>{{item.donor? item.donor.name : 'N/A'}}</v-list-item-title>
                                   <v-list-item-subtitle>
                                     {{moment(item.schedule).format('LLL')}}
                                     <v-chip x-small class="overline">{{item.status}}</v-chip>
@@ -83,6 +83,10 @@
             indeterminate
             v-if="loading"
         ></v-progress-linear> -->
+        <v-card-title>
+          Groups
+        </v-card-title>
+        <v-divider></v-divider>
         <v-card-text style="height: 630px; overflow-y: auto; overflow-x: hidden;">
           <v-row>
             <v-col v-for="(group, group_index) in groups" :key="group_index" cols="12">
@@ -123,7 +127,7 @@
                                             two-line
                                             >
                                             <v-list-item-content>
-                                                <v-list-item-title v-text="item.blood_request.donor.name"></v-list-item-title>
+                                                <v-list-item-title>{{item.blood_request.donor? item.blood_request.donor.name : 'N/A'}}</v-list-item-title>
                                                 <v-list-item-subtitle>
                                                   {{moment(item.blood_request.schedule).format('LLL')}}
                                                   <v-chip x-small class="overline">{{item.status}}</v-chip>

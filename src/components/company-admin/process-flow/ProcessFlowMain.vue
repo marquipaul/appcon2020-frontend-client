@@ -24,6 +24,9 @@
                 <v-card>
                     <v-card-title>
                        {{item.queue_number}}. {{item.title}}
+                       <v-spacer>
+                       </v-spacer>
+                           <v-checkbox @change="changeFinalProcess(item.id)" v-model="item.final_process" label="Final Process"></v-checkbox>
                     </v-card-title>
                     <v-card-text>
                         <v-row class="px-3">
@@ -121,9 +124,24 @@ export default {
                 this.getDataFromApi()
             },
             deep: true
-        }
+        },
+        // "item.final_process" : {
+        //     handler() {
+        //         this.changeFinalProcess();
+        //     },
+        //     deep: true
+        // }
     },
     methods: {
+        changeFinalProcess(id) {
+            this.loading = true
+        
+            this.$store.dispatch('updateFinalFlow', {id: id})
+                .then(res => {
+                    this.loading = false
+                    this.getDataFromApi()
+                })
+        },
         createFlow() {
             bus.$emit('createFlow')
         },
